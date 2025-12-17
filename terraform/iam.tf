@@ -79,3 +79,30 @@ resource "aws_iam_role_policy_attachment" "attach_logs_policy" {
   role       = aws_iam_role.lambda_cost_role.name
   policy_arn = aws_iam_policy.cloudwatch_logs_policy.arn
 }
+
+########################################
+# IAM Policy: DynamoDB write access
+########################################
+data "aws_iam_policy_document" "dynamodb_write_policy" {
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "dynamodb:PutItem"
+    ]
+
+    resources = [
+      aws_dynamodb_table.cost_table.arn
+    ]
+  }
+}
+
+resource "aws_iam_policy" "dynamodb_policy" {
+  name   = "lambda-dynamodb-write-policy"
+  policy = data.aws_iam_policy_document.dynamodb_write_policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "attach_dynamodb_policy" {
+  role       = aws_iam_role.lambda_cost_role.name
+  policy_arn = aws_iam_policy.dynamodb_policy.arn
+}

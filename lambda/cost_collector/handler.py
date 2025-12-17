@@ -2,13 +2,16 @@ import boto3
 from datetime import datetime, timedelta
 import os
 
+dynamodb = boto3.resource("dynamodb")
+ce = boto3.client("ce")
+
+TABLE_NAME = os.environ.get("TABLE_NAME", "cloud-cost-history")
+
 def lambda_handler(event, context):
-
-
-    ce = boto3.client("ce")
-
     today = datetime.utcnow().date()
     yesterday = today - timedelta(days=1)
+
+    table = dynamodb.Table(TABLE_NAME)
 
     response = ce.get_cost_and_usage(
         TimePeriod={
@@ -25,18 +28,19 @@ def lambda_handler(event, context):
         ]
     )
 
-    costs = []
-
     for group in response["ResultsByTime"][0]["Groups"]:
-        service_name = group["Keys"][0]
-        amount = float(group["Metrics"]["UnblendedCost"]["Amount"])
+        service = group["Keys"][0]
+        cost = float(group["Metrics"]["UnblendedCost"]["Amount"])
 
-        costs.append({
-            "service": service_name,
-            "cost": amount
-        })
+        table.put_item(
+            Item={
+                "date": str(yesterday),
+                "service": service,
+                "cost": cost
+            }
+        )
 
     return {
-        "date": str(yesterday),
-        "service_costs": costs
+        "status": "stored",
+        "date": str(yesterday)
     }

@@ -23,9 +23,10 @@ resource "aws_lambda_function" "cost_collector" {
 
   timeout = 30
 
-  environment {
-    variables = {
-      ENV = "dev"
-    }
+environment {
+  variables = {
+    ENV        = "dev"
+    TABLE_NAME = aws_dynamodb_table.cost_table.name
   }
+}
 }
