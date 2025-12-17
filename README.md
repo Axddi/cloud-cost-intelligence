@@ -7,8 +7,7 @@ This project demonstrates real-world cloud engineering, FinOps principles, and I
 Build an automated, cloud-native system to monitor AWS costs, store daily cost history, and notify stakeholders when cloud spending crosses safe limits — without manual intervention.
 
 🏗️ High-Level Architecture
-scss
-Copy code
+
 EventBridge (Daily Scheduler)
           ↓
 AWS Lambda (Cost Collector)
@@ -41,11 +40,12 @@ Each Terraform file has a clear responsibility, following production IaC standar
 🔹 provider.tf
 Initializes AWS as the cloud provider and sets the deployment region.
 
-hcl
-Copy code
+
 provider "aws" {
   region = var.aws_region
 }
+
+
 🔹 variables.tf
 Centralized configuration for:
 
@@ -84,6 +84,7 @@ Connects IAM role
 Injects environment variables
 
 Packages source code automatically
+
 
 🔹 logs.tf
 Creates a dedicated CloudWatch log group:
