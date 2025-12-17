@@ -106,3 +106,30 @@ resource "aws_iam_role_policy_attachment" "attach_dynamodb_policy" {
   role       = aws_iam_role.lambda_cost_role.name
   policy_arn = aws_iam_policy.dynamodb_policy.arn
 }
+
+########################################
+# IAM Policy: SNS publish access
+########################################
+data "aws_iam_policy_document" "sns_publish_policy" {
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "sns:Publish"
+    ]
+
+    resources = [
+      aws_sns_topic.cost_alerts.arn
+    ]
+  }
+}
+
+resource "aws_iam_policy" "sns_policy" {
+  name   = "lambda-sns-publish-policy"
+  policy = data.aws_iam_policy_document.sns_publish_policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "attach_sns_policy" {
+  role       = aws_iam_role.lambda_cost_role.name
+  policy_arn = aws_iam_policy.sns_policy.arn
+}

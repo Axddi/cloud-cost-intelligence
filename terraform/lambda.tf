@@ -25,8 +25,11 @@ resource "aws_lambda_function" "cost_collector" {
 
 environment {
   variables = {
-    ENV        = "dev"
-    TABLE_NAME = aws_dynamodb_table.cost_table.name
+    ENV             = "dev"
+    TABLE_NAME      = aws_dynamodb_table.cost_table.name
+    SNS_TOPIC_ARN   = aws_sns_topic.cost_alerts.arn
+    DAILY_THRESHOLD = "5"
   }
 }
+
 }
