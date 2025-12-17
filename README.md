@@ -75,6 +75,8 @@ CloudWatch Logs
 ✅ Follows least-privilege IAM design
 
 🔹 lambda.tf
+![Lambda Function](screenshots/lambda.png)
+![Lambda Function](screenshots/lambda2.png)
 Defines the AWS Lambda function:
 
 Python 3.11 runtime
@@ -87,6 +89,7 @@ Packages source code automatically
 
 
 🔹 logs.tf
+![CloudWatch Logs](screenshots/cloudwatch.png)
 Creates a dedicated CloudWatch log group:
 
 Controlled log retention (7 days)
@@ -94,6 +97,7 @@ Controlled log retention (7 days)
 Prevents unlimited logging costs
 
 🔹 eventbridge.tf
+![EventBridge Rule](screenshots/eventbridge.png)
 Schedules the Lambda function:
 
 Runs once per day
@@ -103,6 +107,7 @@ Fully serverless automation
 No manual triggers needed
 
 🔹 dynamodb.tf
+![DynamoDB Table](screenshots/dynamodb.png)
 Creates the cloud-cost-history table:
 
 Partition key: date
