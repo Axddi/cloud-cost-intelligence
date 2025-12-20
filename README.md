@@ -1,23 +1,51 @@
 ☁️ Cloud Cost Intelligence Platform (AWS FinOps Project)
-A production-grade, serverless cloud cost monitoring system built on AWS that automatically tracks daily service-wise cloud costs, persists historical data, and sends proactive alerts when spending exceeds defined thresholds.
+AWS FinOps | Serverless | Infrastructure as Code
 
-This project demonstrates real-world cloud engineering, FinOps principles, and Infrastructure as Code (IaC) using Terraform.
+A production-grade, serverless cloud cost monitoring platform built on AWS that automatically tracks daily service-wise cloud costs, stores historical data, exposes a read-only API, and visualizes spending through a modern web dashboard — all provisioned using Terraform (IaC).
+
+This project demonstrates real-world cloud engineering, FinOps cost governance, and secure, scalable architecture.
 
 🎯 Project Objective
-Build an automated, cloud-native system to monitor AWS costs, store daily cost history, and notify stakeholders when cloud spending crosses safe limits — without manual intervention.
+To design and implement a fully automated, cloud-native system that:
+
+Collects AWS cost data daily
+
+Stores service-wise historical cost records
+
+Alerts stakeholders when spending exceeds thresholds
+
+Exposes cost data through an API
+
+Visualizes costs in a user-friendly dashboard
+
+Uses Infrastructure as Code for the entire lifecycle
 
 🏗️ High-Level Architecture
 
-EventBridge (Daily Scheduler)
-          ↓
+Amazon EventBridge (Daily Scheduler)
+            ↓
 AWS Lambda (Cost Collector)
-          ↓
+            ↓
 AWS Cost Explorer
-          ↓
-DynamoDB (Cost History Storage)
-          ↓
-SNS (Email Alerts)
+            ↓
+Amazon DynamoDB (Cost History Storage)
+            ↓
+Amazon SNS (Email Alerts)
+            ↓
+----------------------------------
+            ↓
+API Gateway (Read-Only API)
+            ↓
+AWS Lambda (Cost Reader)
+            ↓
+React Dashboard (S3 + CloudFront)
+
+![Architecure](screenshots/architecture.png)
+
 🧰 Tech Stack
+
+Cloud & Backend
+
 AWS Lambda – Serverless compute
 
 AWS Cost Explorer – Cost analytics
@@ -28,151 +56,187 @@ Amazon EventBridge – Daily automation
 
 Amazon SNS – Email notifications
 
-Amazon CloudWatch – Logs & monitoring
+Amazon API Gateway – Read-only REST API
+
+Amazon CloudWatch – Logging & monitoring
+
+Frontend
+
+React (Vite)
+
+Chart.js
+
+Custom CSS
+
+Infrastructure & Tooling
 
 Terraform – Infrastructure as Code
 
 Python (boto3) – AWS SDK
 
+AWS CLI
+
 ⚙️ Terraform Infrastructure Breakdown
-Each Terraform file has a clear responsibility, following production IaC standards.
 
-🔹 provider.tf
-Initializes AWS as the cloud provider and sets the deployment region.
+All cloud resources are provisioned using Terraform, following modular and production-aligned practices.
 
-
-provider "aws" {
-  region = var.aws_region
-}
-
-
-🔹 variables.tf
-Centralized configuration for:
-
-AWS region
-
-Alert email
-
-Environment flexibility
-
-🔹 iam.tf (Security & Least Privilege)
-Creates:
-
-IAM Role for Lambda
-
-Trust policy (Lambda can assume role)
-
-Fine-grained permissions:
-
-Cost Explorer (read-only)
-
-DynamoDB (write-only)
-
-SNS (publish only)
-
-CloudWatch Logs
-
-✅ Follows least-privilege IAM design
-
-🔹 lambda.tf
-![Lambda Function](screenshots/lambda.png)
-![Lambda Function](screenshots/lambda2.png)
-Defines the AWS Lambda function:
-
-Python 3.11 runtime
-
-Connects IAM role
-
-Injects environment variables
-
-Packages source code automatically
+| File             | Responsibility                        |
+| ---------------- | ------------------------------------- |
+| `provider.tf`    | AWS provider & region configuration   |
+| `variables.tf`   | Centralized environment configuration |
+| `iam.tf`         | Least-privilege IAM roles & policies  |
+| `lambda.tf`      | Lambda function definitions           |
+| `eventbridge.tf` | Daily cost collection scheduler       |
+| `dynamodb.tf`    | Cost history storage                  |
+| `sns.tf`         | Budget alert notifications            |
+| `api_gateway.tf` | Read-only cost API                    |
+| `frontend_s3.tf` | Static frontend hosting               |
+| `cloudfront.tf`  | CDN + HTTPS delivery                  |
 
 
-🔹 logs.tf
-![CloudWatch Logs](screenshots/cloudwatch.png)
-Creates a dedicated CloudWatch log group:
+🔐 Security Design (IAM)
 
-Controlled log retention (7 days)
+Fine-grained IAM policies
 
-Prevents unlimited logging costs
+Separate roles for:
 
-🔹 eventbridge.tf
-![EventBridge Rule](screenshots/eventbridge.png)
-Schedules the Lambda function:
+Cost collection
 
-Runs once per day
+Cost reading (API)
 
-Fully serverless automation
+Read-only access to Cost Explorer
 
-No manual triggers needed
+Write-only access to DynamoDB
 
-🔹 dynamodb.tf
-![DynamoDB Table](screenshots/dynamodb.png)
-Creates the cloud-cost-history table:
+Publish-only access to SNS
 
-Partition key: date
+CloudWatch logging permissions only where required
 
-Sort key: service
-
-On-demand billing (cost-efficient)
-
-🔹 sns.tf
-Creates:
-
-SNS topic for alerts
-
-Email subscription for notifications
+Follows least-privilege principles
 
 🧠 Lambda Function Logic
-The Lambda performs the following steps:
+
+Cost Collector Lambda
 
 Fetches yesterday’s AWS cost data
 
-Groups costs service-wise (EC2, S3, RDS, etc.)
+Groups costs by AWS service
 
-Stores each service cost in DynamoDB
+Stores records in DynamoDB
 
 Calculates total daily spend
 
-Sends an alert email if threshold is exceeded
+Triggers SNS alert if threshold exceeded
 
-🚀 Features
+Cost Reader Lambda
+
+Queries DynamoDB by date
+
+Handles DynamoDB Decimal serialization
+
+Returns clean JSON responses
+
+Enables browser-safe CORS access
+
+🌐 API Layer
+
+Endpoint
+GET /costs?date=YYYY-MM-DD
+
+Features
+
+Read-only access to historical cost data
+
+JSON response format
+
+Designed for UI consumption
+
+Secure Lambda invocation via API Gateway
+
+🖥️ Frontend — Cloud Cost Dashboard
+
+A modern React-based dashboard for visualizing AWS costs.
+
+Features
+
+Date-based cost selection
+
+Service-wise cost breakdown
+
+Total daily spend calculation
+
+Interactive bar chart
+
+Tabular cost view
+
+Service-level filtering
+
+Loading, empty, and error states
+
+Responsive UI
+
+🚀 Frontend Deployment (Pure Cloud + IaC)
+
+The frontend is deployed using a production-grade static hosting architecture.
+
+Architecture:
+
+User Browser
+     ↓ HTTPS
+CloudFront (Global CDN)
+     ↓
+Amazon S3 (Static React Build)
+
+Highlights
+
+Global CDN via CloudFront
+
+HTTPS enabled by default
+
+SPA routing support
+
+No servers, no runtime management
+
+Fully provisioned using Terraform
+
+🔁 Deployment Workflow
+
+# Build frontend
+npm run build
+
+# Provision infrastructure
+terraform apply
+
+# Upload frontend assets
+aws s3 sync dist/ s3://<bucket-name> --delete
+
+
+🚀 Key Features
+
 ✅ Fully automated daily cost tracking
-
 ✅ Service-wise cost breakdown
-
-✅ Persistent historical cost data
-
-✅ Budget threshold alerting
-
-✅ Serverless & scalable
-
-✅ Infrastructure as Code (Terraform)
-
-✅ Production IAM security model
+✅ Historical cost persistence
+✅ Budget threshold email alerts
+✅ Serverless & scalable design
+✅ Secure IAM configuration
+✅ API + Dashboard integration
+✅ 100% Infrastructure as Code
 
 📌 Real-World Use Cases
+
 FinOps cost monitoring
 
 Cloud budget governance
 
-Early detection of cloud overspending
+Cost anomaly detection
 
 DevOps & SRE cost visibility
 
-📄 Resume-Ready Description
-Built and deployed a serverless AWS Cloud Cost Intelligence Platform using Lambda, DynamoDB, EventBridge, SNS, and Terraform to automate daily cost tracking, persist service-wise spending data, and trigger threshold-based alerts with least-privilege IAM security.
+Cloud expense auditing
 
 🏁 Project Status
-✅ Fully deployed
-✅ Automated & monitored
+
+✅ Fully implemented
+✅ Fully documented
 ✅ Production-ready
-
-🔮 Future Enhancements
-Web dashboard (React + API Gateway)
-
-Multi-account AWS support
-
-Cost trend visualization
-
-Monthly budget forecasting
+✅ Cost-safe (IaC teardown supported)
