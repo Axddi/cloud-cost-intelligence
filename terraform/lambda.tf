@@ -33,3 +33,34 @@ environment {
 }
 
 }
+
+########################################
+# Package Cost Reader Lambda
+########################################
+data "archive_file" "cost_reader_zip" {
+  type        = "zip"
+  source_dir  = "../lambda/cost_reader"
+  output_path = "../lambda/cost_reader.zip"
+}
+########################################
+# Cost Reader Lambda Function
+########################################
+resource "aws_lambda_function" "cost_reader" {
+  function_name = "cloud-cost-reader"
+
+  runtime = "python3.11"
+  handler = "handler.lambda_handler"
+
+  filename         = data.archive_file.cost_reader_zip.output_path
+  source_code_hash = data.archive_file.cost_reader_zip.output_base64sha256
+
+  role = aws_iam_role.lambda_cost_role.arn
+
+  timeout = 10
+
+  environment {
+    variables = {
+      TABLE_NAME = aws_dynamodb_table.cost_table.name
+    }
+  }
+}
