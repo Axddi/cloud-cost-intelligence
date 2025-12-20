@@ -6,88 +6,59 @@ A production-grade, serverless cloud cost monitoring platform built on AWS that 
 This project demonstrates real-world cloud engineering, FinOps cost governance, and secure, scalable architecture.
 
 # 🎯 Project Objective
-To design and implement a fully automated, cloud-native system that:
+-To design and implement a fully automated, cloud-native system that:
 
-Collects AWS cost data daily
+-Collects AWS cost data daily
 
-Stores service-wise historical cost records
+-Stores service-wise historical cost records
 
-Alerts stakeholders when spending exceeds thresholds
+-Alerts stakeholders when spending exceeds thresholds
 
-Exposes cost data through an API
+-Exposes cost data through an API
 
-Visualizes costs in a user-friendly dashboard
+-Visualizes costs in a user-friendly dashboard
 
-Uses Infrastructure as Code for the entire lifecycle
+-Uses Infrastructure as Code for the entire lifecycle
 
-# 🏗️ High-Level Architecture
+# 🏗️ Architecture
 
-Amazon EventBridge (Daily Scheduler)
-
-            ↓
-
-AWS Lambda (Cost Collector)
-
-            ↓
-
-AWS Cost Explorer
-
-            ↓
-
-Amazon DynamoDB (Cost History Storage)
-
-            ↓
-
-Amazon SNS (Email Alerts)
-
-            ↓
-
-API Gateway (Read-Only API)
-
-            ↓
-
-AWS Lambda (Cost Reader)
-
-            ↓
-
-React Dashboard (S3 + CloudFront)
-
+Amazon EventBridge (Daily Scheduler) -> AWS Lambda (Cost Collector) -> AWS Cost Explorer -> Amazon DynamoDB (Cost History Storage) -> Amazon SNS (Email Alerts) -> API Gateway (Read-Only API) -> AWS Lambda (Cost Reader) -> React Dashboard (S3 + CloudFront)
 
 ![Architecure](screenshots/architecture.png)
 
 # 🧰 Tech Stack
 
-Cloud & Backend
+-Cloud & Backend
 
-AWS Lambda – Serverless compute
+ -AWS Lambda – Serverless compute
 
-AWS Cost Explorer – Cost analytics
+ -AWS Cost Explorer – Cost analytics
 
-Amazon DynamoDB – Persistent cost storage
+ -Amazon DynamoDB – Persistent cost storage
 
-Amazon EventBridge – Daily automation
+ -Amazon EventBridge – Daily automation
 
-Amazon SNS – Email notifications
+ -Amazon SNS – Email notifications
 
-Amazon API Gateway – Read-only REST API
+ -Amazon API Gateway – Read-only REST API
 
-Amazon CloudWatch – Logging & monitoring
+ -Amazon CloudWatch – Logging & monitoring
 
-Frontend
+-Frontend
 
-React (Vite)
+ -React (Vite)
 
-Chart.js
+ -Chart.js
 
-Custom CSS
+ -Custom CSS
 
-Infrastructure & Tooling
+-Infrastructure & Tooling
 
-Terraform – Infrastructure as Code
+ -Terraform – Infrastructure as Code
 
-Python (boto3) – AWS SDK
+ -Python (boto3) – AWS SDK
 
-AWS CLI
+ -AWS CLI
 
 # ⚙️ Terraform Infrastructure Breakdown
 
@@ -109,62 +80,62 @@ All cloud resources are provisioned using Terraform, following modular and produ
 
 # 🔐 Security Design (IAM)
 
-Fine-grained IAM policies
+-Fine-grained IAM policies
 
-Separate roles for:
+-Separate roles for:
 
-Cost collection
+-Cost collection
 
-Cost reading (API)
+-Cost reading (API)
 
-Read-only access to Cost Explorer
+-Read-only access to Cost Explorer
 
-Write-only access to DynamoDB
+-Write-only access to DynamoDB
 
-Publish-only access to SNS
+-Publish-only access to SNS
 
-CloudWatch logging permissions only where required
+-CloudWatch logging permissions only where required
 
-Follows least-privilege principles
+-Follows least-privilege principles
 
 # 🧠 Lambda Function Logic
 
-Cost Collector Lambda
+-Cost Collector Lambda
 
-Fetches yesterday’s AWS cost data
+-Fetches yesterday’s AWS cost data
 
-Groups costs by AWS service
+-Groups costs by AWS service
 
-Stores records in DynamoDB
+-Stores records in DynamoDB
 
-Calculates total daily spend
+-Calculates total daily spend
 
-Triggers SNS alert if threshold exceeded
+-Triggers SNS alert if threshold exceeded
 
-Cost Reader Lambda
+-Cost Reader Lambda
 
-Queries DynamoDB by date
+-Queries DynamoDB by date
 
-Handles DynamoDB Decimal serialization
+-Handles DynamoDB Decimal serialization
 
-Returns clean JSON responses
+-Returns clean JSON responses
 
-Enables browser-safe CORS access
+-Enables browser-safe CORS access
 
 # 🌐 API Layer
 
-Endpoint
+-Endpoint
 GET /costs?date=YYYY-MM-DD
 
-Features
+-Features
 
-Read-only access to historical cost data
+ -Read-only access to historical cost data
 
-JSON response format
+ -JSON response format
 
-Designed for UI consumption
+ -Designed for UI consumption
 
-Secure Lambda invocation via API Gateway
+ -Secure Lambda invocation via API Gateway
 
 # 🖥️ Frontend — Cloud Cost Dashboard
 
@@ -172,21 +143,21 @@ A modern React-based dashboard for visualizing AWS costs.
 
 Features
 
-Date-based cost selection
+-Date-based cost selection
 
-Service-wise cost breakdown
+-Service-wise cost breakdown
 
-Total daily spend calculation
+-Total daily spend calculation
 
-Interactive bar chart
+-Interactive bar chart
 
-Tabular cost view
+-Tabular cost view
 
-Service-level filtering
+-Service-level filtering
 
-Loading, empty, and error states
+-Loading, empty, and error states
 
-Responsive UI
+-Responsive UI
 
 # 🚀 Frontend Deployment (Pure Cloud + IaC)
 
@@ -194,72 +165,68 @@ The frontend is deployed using a production-grade static hosting architecture.
 
 Architecture:
 
-User Browser
-     ↓ HTTPS
-CloudFront (Global CDN)
-     ↓
-Amazon S3 (Static React Build)
+User Browser (HTTPS) -> CloudFront (Global CDN) -> Amazon S3 (Static React Build)
 
 Highlights
 
-Global CDN via CloudFront
+-Global CDN via CloudFront
 
-HTTPS enabled by default
+-HTTPS enabled by default
 
-SPA routing support
+-SPA routing support
 
-No servers, no runtime management
+-No servers, no runtime management
 
-Fully provisioned using Terraform
+-Fully provisioned using Terraform
 
 # 🔁 Deployment Workflow
 
-Build frontend
-npm run build
+-Build frontend
+ -npm run build
 
-Provision infrastructure
-terraform apply
+-Provision infrastructure
+ -terraform apply
 
-Upload frontend assets
-aws s3 sync dist/ s3://<bucket-name> --delete
+-Upload frontend assets
+ -aws s3 sync dist/ s3://<bucket-name> --delete
 
 
 # 🚀 Key Features
 
-✅ Fully automated daily cost tracking
+- Fully automated daily cost tracking
 
-✅ Service-wise cost breakdown
+- Service-wise cost breakdown
 
-✅ Historical cost persistence
+- Historical cost persistence
 
-✅ Budget threshold email alerts
+- Budget threshold email alerts
 
-✅ Serverless & scalable design
+- Serverless & scalable design
 
-✅ Secure IAM configuration
+- Secure IAM configuration
 
-✅ API + Dashboard integration
+- API + Dashboard integration
 
-✅ 100% Infrastructure as Code
+- 100% Infrastructure as Code
 
 # 📌 Real-World Use Cases
 
-FinOps cost monitoring
+-FinOps cost monitoring
 
-Cloud budget governance
+-Cloud budget governance
 
-Cost anomaly detection
+-Cost anomaly detection
 
-DevOps & SRE cost visibility
+-DevOps & SRE cost visibility
 
-Cloud expense auditing
+-Cloud expense auditing
 
 # 🏁 Project Status
 
-✅ Fully implemented
+- Fully implemented
 
-✅ Fully documented
+- Fully documented
 
-✅ Production-ready
+- Production-ready
 
-✅ Cost-safe (IaC teardown supported)
+- Cost-safe (IaC teardown supported)
