@@ -23,20 +23,35 @@ Uses Infrastructure as Code for the entire lifecycle
 # 🏗️ High-Level Architecture
 
 Amazon EventBridge (Daily Scheduler)
+
             ↓
+
 AWS Lambda (Cost Collector)
+
             ↓
+
 AWS Cost Explorer
+
             ↓
+
 Amazon DynamoDB (Cost History Storage)
+
             ↓
+
 Amazon SNS (Email Alerts)
+
             ↓
+
 API Gateway (Read-Only API)
+
             ↓
+
 AWS Lambda (Cost Reader)
+
             ↓
+
 React Dashboard (S3 + CloudFront)
+
 
 ![Architecure](screenshots/architecture.png)
 
@@ -212,12 +227,19 @@ aws s3 sync dist/ s3://<bucket-name> --delete
 # 🚀 Key Features
 
 ✅ Fully automated daily cost tracking
+
 ✅ Service-wise cost breakdown
+
 ✅ Historical cost persistence
+
 ✅ Budget threshold email alerts
+
 ✅ Serverless & scalable design
+
 ✅ Secure IAM configuration
+
 ✅ API + Dashboard integration
+
 ✅ 100% Infrastructure as Code
 
 # 📌 Real-World Use Cases
@@ -235,6 +257,9 @@ Cloud expense auditing
 # 🏁 Project Status
 
 ✅ Fully implemented
+
 ✅ Fully documented
+
 ✅ Production-ready
+
 ✅ Cost-safe (IaC teardown supported)
