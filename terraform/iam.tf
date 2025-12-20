@@ -133,3 +133,30 @@ resource "aws_iam_role_policy_attachment" "attach_sns_policy" {
   role       = aws_iam_role.lambda_cost_role.name
   policy_arn = aws_iam_policy.sns_policy.arn
 }
+
+########################################
+# IAM Policy: DynamoDB read access
+########################################
+data "aws_iam_policy_document" "dynamodb_read_policy" {
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "dynamodb:Query"
+    ]
+
+    resources = [
+      aws_dynamodb_table.cost_table.arn
+    ]
+  }
+}
+
+resource "aws_iam_policy" "dynamodb_read_policy" {
+  name   = "lambda-dynamodb-read-policy"
+  policy = data.aws_iam_policy_document.dynamodb_read_policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "attach_dynamodb_read_policy" {
+  role       = aws_iam_role.lambda_cost_role.name
+  policy_arn = aws_iam_policy.dynamodb_read_policy.arn
+}
