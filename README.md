@@ -5,6 +5,8 @@ A production-grade, serverless cloud cost monitoring platform built on AWS that 
 
 This project demonstrates real-world cloud engineering, FinOps cost governance, and secure, scalable architecture.
 
+![dashboard](screenshots/dashboard.png)
+
 # 🎯 Project Objective
 -To design and implement a fully automated, cloud-native system that:
 
