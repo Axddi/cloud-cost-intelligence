@@ -1,11 +1,11 @@
-☁️ Cloud Cost Intelligence Platform (AWS FinOps Project)
+# ☁️ Cloud Cost Intelligence Platform (AWS FinOps Project)
 AWS FinOps | Serverless | Infrastructure as Code
 
 A production-grade, serverless cloud cost monitoring platform built on AWS that automatically tracks daily service-wise cloud costs, stores historical data, exposes a read-only API, and visualizes spending through a modern web dashboard — all provisioned using Terraform (IaC).
 
 This project demonstrates real-world cloud engineering, FinOps cost governance, and secure, scalable architecture.
 
-🎯 Project Objective
+# 🎯 Project Objective
 To design and implement a fully automated, cloud-native system that:
 
 Collects AWS cost data daily
@@ -20,7 +20,7 @@ Visualizes costs in a user-friendly dashboard
 
 Uses Infrastructure as Code for the entire lifecycle
 
-🏗️ High-Level Architecture
+# 🏗️ High-Level Architecture
 
 Amazon EventBridge (Daily Scheduler)
             ↓
@@ -32,8 +32,6 @@ Amazon DynamoDB (Cost History Storage)
             ↓
 Amazon SNS (Email Alerts)
             ↓
-----------------------------------
-            ↓
 API Gateway (Read-Only API)
             ↓
 AWS Lambda (Cost Reader)
@@ -42,7 +40,7 @@ React Dashboard (S3 + CloudFront)
 
 ![Architecure](screenshots/architecture.png)
 
-🧰 Tech Stack
+# 🧰 Tech Stack
 
 Cloud & Backend
 
@@ -76,7 +74,7 @@ Python (boto3) – AWS SDK
 
 AWS CLI
 
-⚙️ Terraform Infrastructure Breakdown
+# ⚙️ Terraform Infrastructure Breakdown
 
 All cloud resources are provisioned using Terraform, following modular and production-aligned practices.
 
@@ -94,7 +92,7 @@ All cloud resources are provisioned using Terraform, following modular and produ
 | `cloudfront.tf`  | CDN + HTTPS delivery                  |
 
 
-🔐 Security Design (IAM)
+# 🔐 Security Design (IAM)
 
 Fine-grained IAM policies
 
@@ -114,7 +112,7 @@ CloudWatch logging permissions only where required
 
 Follows least-privilege principles
 
-🧠 Lambda Function Logic
+# 🧠 Lambda Function Logic
 
 Cost Collector Lambda
 
@@ -138,7 +136,7 @@ Returns clean JSON responses
 
 Enables browser-safe CORS access
 
-🌐 API Layer
+# 🌐 API Layer
 
 Endpoint
 GET /costs?date=YYYY-MM-DD
@@ -153,7 +151,7 @@ Designed for UI consumption
 
 Secure Lambda invocation via API Gateway
 
-🖥️ Frontend — Cloud Cost Dashboard
+# 🖥️ Frontend — Cloud Cost Dashboard
 
 A modern React-based dashboard for visualizing AWS costs.
 
@@ -175,7 +173,7 @@ Loading, empty, and error states
 
 Responsive UI
 
-🚀 Frontend Deployment (Pure Cloud + IaC)
+# 🚀 Frontend Deployment (Pure Cloud + IaC)
 
 The frontend is deployed using a production-grade static hosting architecture.
 
@@ -199,19 +197,19 @@ No servers, no runtime management
 
 Fully provisioned using Terraform
 
-🔁 Deployment Workflow
+# 🔁 Deployment Workflow
 
-# Build frontend
+Build frontend
 npm run build
 
-# Provision infrastructure
+Provision infrastructure
 terraform apply
 
-# Upload frontend assets
+Upload frontend assets
 aws s3 sync dist/ s3://<bucket-name> --delete
 
 
-🚀 Key Features
+# 🚀 Key Features
 
 ✅ Fully automated daily cost tracking
 ✅ Service-wise cost breakdown
@@ -222,7 +220,7 @@ aws s3 sync dist/ s3://<bucket-name> --delete
 ✅ API + Dashboard integration
 ✅ 100% Infrastructure as Code
 
-📌 Real-World Use Cases
+# 📌 Real-World Use Cases
 
 FinOps cost monitoring
 
@@ -234,7 +232,7 @@ DevOps & SRE cost visibility
 
 Cloud expense auditing
 
-🏁 Project Status
+# 🏁 Project Status
 
 ✅ Fully implemented
 ✅ Fully documented
