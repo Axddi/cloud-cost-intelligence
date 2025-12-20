@@ -30,35 +30,35 @@ Amazon EventBridge (Daily Scheduler) -> AWS Lambda (Cost Collector) -> AWS Cost 
 
 -Cloud & Backend
 
- -AWS Lambda – Serverless compute
+  -AWS Lambda – Serverless compute
 
- -AWS Cost Explorer – Cost analytics
+  -AWS Cost Explorer – Cost analytics
 
- -Amazon DynamoDB – Persistent cost storage
+  -Amazon DynamoDB – Persistent cost storage
 
- -Amazon EventBridge – Daily automation
+  -Amazon EventBridge – Daily automation
 
- -Amazon SNS – Email notifications
+  -Amazon SNS – Email notifications
 
- -Amazon API Gateway – Read-only REST API
+  -Amazon API Gateway – Read-only REST API
 
- -Amazon CloudWatch – Logging & monitoring
+  -Amazon CloudWatch – Logging & monitoring
 
 -Frontend
 
- -React (Vite)
+  -React (Vite)
 
- -Chart.js
+  -Chart.js
 
- -Custom CSS
+  -Custom CSS
 
 -Infrastructure & Tooling
 
- -Terraform – Infrastructure as Code
+  -Terraform – Infrastructure as Code
 
- -Python (boto3) – AWS SDK
+  -Python (boto3) – AWS SDK
 
- -AWS CLI
+  -AWS CLI
 
 # ⚙️ Terraform Infrastructure Breakdown
 
